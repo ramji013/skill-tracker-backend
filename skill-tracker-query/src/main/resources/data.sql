@@ -1,0 +1,15 @@
+insert into skill (id, skill, is_tech_skill) values (1, 'Java', 'Y');
+insert into skill (id, skill, is_tech_skill) values (2, 'HTML-CSS-JAVASCRIPT', 'Y');
+insert into skill (id, skill, is_tech_skill) values (3, 'ANGULAR', 'Y');
+insert into skill (id, skill, is_tech_skill) values (4, 'REACT', 'Y');
+insert into skill (id, skill, is_tech_skill) values (5, 'SPRING', 'Y');
+insert into skill (id, skill, is_tech_skill) values (6, 'RESTFUL', 'Y');
+insert into skill (id, skill, is_tech_skill) values (7, 'HIBERNATE', 'Y');
+insert into skill (id, skill, is_tech_skill) values (8, 'GIT', 'Y');
+insert into skill (id, skill, is_tech_skill) values (9, 'DOCKER', 'Y');
+insert into skill (id, skill, is_tech_skill) values (10, 'JENKINS', 'Y');
+insert into skill (id, skill, is_tech_skill) values (11, 'AWS', 'Y');
+insert into skill (id, skill, is_tech_skill) values (12, 'AZURE', 'Y');
+insert into skill (id, skill, is_tech_skill) values (13, 'SPOKEN', 'N');
+insert into skill (id, skill, is_tech_skill) values (14, 'COMMUNICATION', 'N');
+insert into skill (id, skill, is_tech_skill) values (15, 'APTITUDE', 'N');

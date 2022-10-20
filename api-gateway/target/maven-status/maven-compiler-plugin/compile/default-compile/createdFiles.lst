@@ -1,0 +1,4 @@
+com/skilltracker/apigateway/bean/Error.class
+com/skilltracker/apigateway/configuration/SimpleCorsConfiguration.class
+com/skilltracker/apigateway/bean/Error$ErrorBuilder.class
+com/skilltracker/apigateway/ApiGatewayApplication.class

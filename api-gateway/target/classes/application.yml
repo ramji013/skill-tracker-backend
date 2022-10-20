@@ -1,0 +1,162 @@
+server:
+  port: 4000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: gateway
+  endpoint:
+    gateway:
+      enabled: true # default value
+
+spring:
+  application:
+    name:
+      API-GATEWAY
+  cloud:
+    gateway:
+      routes:
+        - id: token
+          uri: lb://SKILL-TRACKER-OAUTH-JWT
+          predicates:
+            - Path=/oauth/token
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: oauth-jwt-token
+                fallbackUri: forward:/oauthJwtFallBack
+
+        - id: RegisterUser
+          uri: lb://SKILL-TRACKER-CMD
+          predicates:
+            - Path=/signup/registerUser
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: register-user
+                fallbackUri: forward:/registerUserFallBack
+
+        - id: CreateUser
+          uri: lb://SKILL-TRACKER-CMD
+          predicates:
+            - Path=/api/v1/user/createUser
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: create-user
+                fallbackUri: forward:/createUserFallBack
+
+        - id: UpdateUser
+          uri: lb://SKILL-TRACKER-CMD
+          predicates:
+            - Path=/api/v1/user/updateUser/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: update-user
+                fallbackUri: forward:/updateUserFallBack
+
+        - id: GetAllUser
+          uri: lb://SKILL-TRACKER-QUERY
+          predicates:
+            - Path=/api/v1/user/
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: get-all-user
+                fallbackUri: forward:/getAllUserFallBack
+
+        - id: SearchUserByName
+          uri: lb://SKILL-TRACKER-QUERY
+          predicates:
+            - Path=/api/v1/user/name
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: search-user-by-name
+                fallbackUri: forward:/searchUserByNameFallBack
+
+        - id: AddProfile
+          uri: lb://SKILL-TRACKER-CMD
+          predicates:
+            - Path=/skill-tracker/api/v1/engineer/add-profile
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: add-profile
+                fallbackUri: forward:/addProfileFallBack
+
+        - id: UpdateProfile
+          uri: lb://SKILL-TRACKER-CMD
+          predicates:
+            - Path=/skill-tracker/api/v1/engineer/update-profile/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: update-profile
+                fallbackUri: forward:/updateProfileFallBack
+
+        - id: RestoreReadDb
+          uri: lb://SKILL-TRACKER-CMD
+          predicates:
+            - Path=/api/v1/restoreReadDb
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: restoreDB
+                fallbackUri: forward:/restoreDBFallBack
+
+        - id: GetAllProfile
+          uri: lb://SKILL-TRACKER-QUERY
+          predicates:
+            - Path=/skill-tracker/api/v1/admin
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: get-all-profile
+                fallbackUri: forward:/getAllProfileFallBack
+
+        - id: SearchProfileByCriteria
+          uri: lb://SKILL-TRACKER-QUERY
+          predicates:
+            - Path=/skill-tracker/api/v1/admin/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: search-profile-by-criteria
+                fallbackUri: forward:/searchProfileByCriteriaFallBack
+
+        - id: Actuator
+          uri: lb://SKILL-TRACKER-QUERY
+          predicates:
+            - Path=/actuator
+
+        - id: swagger-ui
+          uri: lb://SKILL-TRACKER-QUERY
+          predicates:
+            - Path=/swagger-ui
+
+        - id: FetchAllSkill
+          uri: lb://SKILL-TRACKER-QUERY
+          predicates:
+            - Path=/skill-tracker/api/v1/skills
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: fetch-all-skills
+                fallbackUri: forward:/fetchAllSkillsFallBack
+
+
+resilience4j:
+  circuitBreaker:
+    configs:
+      default:
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 10
+        failureCallRateThreshold: 20
+        slowCallRateThreshold: 10
+        slowCallDurationThreshold: 2000ms
+        waitDurationInOpenState: 10s
+        minimumNumberOfCalls: 5
+        permittedNumberOfCallsInHalfOpenState: 5
